@@ -9,8 +9,7 @@ export MAKEFLAGS=-j$(nproc)
 for f in $(ls pkgs/); do
   pushd pkgs/$f
   namcap PKGBUILD
-  makepkg -s
+  su --login builder --command="makepkg -s"
   mv *.pkg.tar.zst ..
   popd
 done
-
