@@ -1,0 +1,11 @@
+---
+name: "Build PKGBUILDS"
+description: "Builds PKGBUILDs"
+branding:
+  icon: package
+  color: blue
+runs:
+  using: podman
+  image: Containerfile
+  args:
+    - "${{ inputs.path }}"
