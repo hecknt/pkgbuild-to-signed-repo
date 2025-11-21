@@ -5,7 +5,7 @@ branding:
   icon: package
   color: blue
 runs:
-  using: podman
+  using: docker
   image: Containerfile
   args:
     - "${{ inputs.path }}"
