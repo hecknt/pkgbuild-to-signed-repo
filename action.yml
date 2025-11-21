@@ -6,6 +6,6 @@ branding:
   color: blue
 runs:
   using: docker
-  image: Containerfile
+  image: Dockerfile
   args:
     - "${{ inputs.path }}"
