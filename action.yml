@@ -22,7 +22,7 @@ runs:
   using: composite
   steps:
     - name: Run makepkg on any available PKGBUILDs
-      uses: ./.github/actions/docker
+      uses: hecknt/makepkg-action@v0.1.0
 
     - name: Delete possible leftover temporary release
       shell: bash
