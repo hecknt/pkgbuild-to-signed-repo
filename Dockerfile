@@ -2,7 +2,7 @@ FROM docker.io/archlinux/archlinux:base-devel
 
 COPY system_files /
 
-RUN pacman -Syu --noconfirm --needed git wget namcap sudo pacman-contrib namcap
+RUN pacman -Syu --noconfirm --needed git wget namcap sudo pacman-contrib namcap tree
 
 # Create build user
 RUN useradd -m --shell=/bin/bash build && usermod -L build && \
