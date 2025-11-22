@@ -27,7 +27,7 @@ runs:
         submodules: "recursive"
 
     - name: Run makepkg on any available PKGBUILDs
-      uses: hecknt/makepkg-action@56ec5374c5851722b97c7c113f758e3c35cb8083
+      uses: hecknt/makepkg-action@v0.2.0
       with:
         repo_name: "${{ inputs.repo_name }}"
         gpg_key_id: "${{ inputs.gpg_key_id }}"
