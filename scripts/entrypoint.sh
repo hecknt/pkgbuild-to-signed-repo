@@ -14,7 +14,7 @@ export MAKEFLAGS=-j$(nproc)
 for f in $(ls pkgs/); do
   pushd pkgs/$f
   namcap PKGBUILD
-  su build --command="makepkg -s"
+  su build --command="makepkg -s --noconfirm"
   mv *.pkg.tar.zst ../repo
   popd
 done
