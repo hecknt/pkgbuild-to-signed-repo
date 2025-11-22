@@ -11,7 +11,7 @@ if [ ! -z "${GPG_KEY_DATA-}" ]; then
     gpg --import /dev/stdin <<<"${GPG_KEY_DATA}"
 fi
 
-gpg --recv-keys ${GPG_KEY_ID}
+gpg --recv-keys "${GPG_KEY_ID}"
 
 if [ -d "/github" ]; then
 sudo chown -R build /github/workspace /github/home
@@ -35,5 +35,5 @@ done
 tree repo
 
 # Generate repository
-find repo -type f -iname '*.pkg.tar*' -not -iname '*.sig' -print -exec gpg --batch --yes --detach-sign --use-agent -u "${GPG_KEY_ID}"
+find repo -type f -iname '*.pkg.tar*' -not -iname '*.sig' -print -exec gpg --batch --yes --detach-sign --use-agent -u "${GPG_KEY_ID}" {} \;
 find repo -type f -iname '*.pkg.tar*' -not -iname '*.sig' -print0 | xargs -0 repo-add -k "${GPG_KEY_ID}" -s -v repo/repo.db.tar.zst
