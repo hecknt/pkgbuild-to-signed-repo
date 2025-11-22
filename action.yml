@@ -12,6 +12,9 @@ inputs:
   gpg_key_data:
     description: "The private GPG key used to sign the packages in the repository."
     required: true
+  github_token:
+    description: "The token used to manage github releases."
+    required: true
 branding:
   icon: package
   color: blue
@@ -25,7 +28,7 @@ runs:
       shell: bash
       env:
         GH_REPO: "${{ github.repository }}"
-        GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        GH_TOKEN: "${{ inputs.github_token }}"
       run: gh release delete --yes _"${{ inputs.repo_name }}" || true
 
     - name: Publish mainline to a temporary release
@@ -42,21 +45,21 @@ runs:
       shell: bash
       env:
         GH_REPO: "${{ github.repository }}"
-        GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        GH_TOKEN: "${{ inputs.github_token }}"
       run: gh release delete --yes "${{ inputs.repo_name }}" || true
 
     - name: Rename the temporary release to mainline
       shell: bash
       env:
         GH_REPO: "${{ github.repository }}"
-        GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        GH_TOKEN: "${{ inputs.github_token }}"
       run: gh release edit --latest --tag "${{ inputs.repo_name }}" --title "${{ inputs.repo_name }}" _"${{ inputs.repo_name }}"
 
     - name: Delete the temporary Git tag
       shell: bash
       env:
         GH_REPO: "${{ github.repository }}"
-        GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        GH_TOKEN: "${{ inputs.github_token }}"
       run: gh api -X DELETE "repos/${{ github.repository }}/git/refs/tags/_${{ inputs.repo_name }}"
 
     - name: Tag the mainline release
