@@ -1,11 +1,13 @@
 ---
 name: "Build PKGBUILDS"
 description: "Builds PKGBUILDs"
+inputs:
+  repo_name:
+    description: "Name of the repo that is generated."
+    required: true
 branding:
   icon: package
   color: blue
 runs:
   using: docker
   image: Dockerfile
-  args:
-    - "${{ inputs.path }}"
