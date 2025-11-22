@@ -21,6 +21,9 @@ branding:
 runs:
   using: composite
   steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+
     - name: Run makepkg on any available PKGBUILDs
       uses: hecknt/makepkg-action@v0.1.0
       with:

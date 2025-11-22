@@ -1,7 +1,5 @@
-# pkgbuild-to-signed-repo Action
-This action will build all PKGBUILDs inside of the `repos/` folder within the github repository, and then turn the resulting packages into a repo. It uses a GPG key to sign this repository.
-
-Currently, pushing the resulting repo anywhere github release is not handled by this action automatically.
+# pkgbuild-to-signed-repo Github Action
+This action will build all PKGBUILDs inside of the `repos/` folder within the github repository, turn the resulting packages into a signed pacman repo, and then release it as a github release.
 
 ## Obtaining the GPG key
 If you do not have a GPG key to use, you can generate one by using `gpg --full-generate-key`. Select `RSA and RSA` as the kind of key you can, and make sure not to enter a passphrase.
@@ -31,14 +29,18 @@ To obtain the private key used as the `gpg_key_data` input, run `gpg --export-se
 ### gpg_key_data
 **required** The private GPG key used to sign the packages in the repository.
 
+### github_token
+**required** The token used to manage github releases.
+
 ## Usage Example
 
 ```yaml
-- name: Build
+- name: Build & Push to GitHub Releases
   id: build
   uses: hecknt/pkgbuild-to-signed-repo@v0.1.0
   with:
     repo_name: "repository"
+    github_token: "${{ secrets.GITHUB_TOKEN }}"
     gpg_key_data: "${{ secrets.GPG_KEY_DATA }}"
     gpg_key_id: "${{ vars.GPG_KEY_ID }}"
 ```
