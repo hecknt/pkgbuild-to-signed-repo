@@ -1,0 +1,17 @@
+---
+name: "Build PKGBUILDS"
+description: "Builds PKGBUILDs"
+
+inputs:
+  repo_name:
+    description: "The name of the repo that is generated."
+    required: true
+  gpg_key_id:
+    description: "The public fingerprint of the GPG key used to validate the packages in the repository."
+    required: true
+  gpg_key_data:
+    description: "The private GPG key used to sign the packages in the repository."
+    required: true
+runs:
+  using: docker
+  image: Dockerfile

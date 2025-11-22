@@ -1,13 +1,66 @@
 ---
-name: "Build PKGBUILDS"
-description: "Builds PKGBUILDs"
+name: "Build signed repo and publish as release"
+description: "Build a custom Arch Linux repo"
+
 inputs:
   repo_name:
-    description: "Name of the repo that is generated."
+    description: "The name of the repo that is generated."
+    required: true
+  gpg_key_id:
+    description: "The public fingerprint of the GPG key used to validate the packages in the repository."
+    required: true
+  gpg_key_data:
+    description: "The private GPG key used to sign the packages in the repository."
     required: true
 branding:
   icon: package
   color: blue
 runs:
-  using: docker
-  image: Dockerfile
+  using: composite
+  steps:
+    - name: Run makepkg on any available PKGBUILDs
+      uses: actions/docker@main
+
+    - name: Delete possible leftover temporary release
+      shell: bash
+      env:
+        GH_REPO: "${{ github.repository }}"
+        GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      run: gh release delete --yes _"${{ inputs.repo_name }}" || true
+
+    - name: Publish mainline to a temporary release
+      uses: ncipollo/release-action@v1.20.0
+      with:
+        name: _"${{ inputs.repo_name }}"
+        tag: _"${{ inputs.repo_name }}""
+        commit: ${{ github.sha }}
+        artifacts: ./repo/*
+        artifactErrorsFailBuild: true
+        bodyFile: README.md
+
+    - name: Delete the existing mainline release
+      shell: bash
+      env:
+        GH_REPO: "${{ github.repository }}"
+        GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      run: gh release delete --yes "${{ inputs.repo_name }}" || true
+
+    - name: Rename the temporary release to mainline
+      shell: bash
+      env:
+        GH_REPO: "${{ github.repository }}"
+        GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      run: gh release edit --latest --tag "${{ inputs.repo_name }}" --title "${{ inputs.repo_name }}" _"${{ inputs.repo_name }}"
+
+    - name: Delete the temporary Git tag
+      shell: bash
+      env:
+        GH_REPO: "${{ github.repository }}"
+        GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      run: gh api -X DELETE "repos/${{ github.repository }}/git/refs/tags/_${{ inputs.repo_name }}"
+
+    - name: Tag the mainline release
+      uses: rickstaa/action-create-tag@v1.7.2
+      with:
+        tag: ${{ inputs.repo_name }}
+        force_push_tag: true
