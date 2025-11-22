@@ -1,5 +1,11 @@
 #!/bin/bash
 
+set -oeux pipefail
+
+# debugging
+tree
+ls -al
+
 if [ -d "/github" ]; then
 sudo chown -R build /github/workspace /github/home
 fi
