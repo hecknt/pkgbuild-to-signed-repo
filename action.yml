@@ -23,6 +23,9 @@ runs:
   steps:
     - name: Run makepkg on any available PKGBUILDs
       uses: hecknt/makepkg-action@v0.1.0
+      with:
+        gpg_key_id: "${{ inputs.gpg_key_id }}"
+        gpg_key_data: "${{ inputs.gpg_key_data }}"
 
     - name: Delete possible leftover temporary release
       shell: bash
