@@ -36,4 +36,4 @@ tree repo
 
 # Generate repository
 find repo -type f -iname '*.pkg.tar*' -not -iname '*.sig' -print -exec gpg --batch --yes --detach-sign --use-agent -u "${GPG_KEY_ID}" {} \;
-find repo -type f -iname '*.pkg.tar*' -not -iname '*.sig' -print0 | xargs -0 repo-add -k "${GPG_KEY_ID}" -s -v repo/"${INPUTS_REPO_NAME}".db.tar.zst
+find repo -type f -iname '*.pkg.tar*' -not -iname '*.sig' -print0 | xargs -0 repo-add -k "${GPG_KEY_ID}" -s -v repo/"${INPUT_REPO_NAME}".db.tar.zst
