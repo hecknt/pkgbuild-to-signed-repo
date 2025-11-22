@@ -34,8 +34,8 @@ runs:
     - name: Publish mainline to a temporary release
       uses: ncipollo/release-action@v1.20.0
       with:
-        name: _"${{ inputs.repo_name }}"
-        tag: _"${{ inputs.repo_name }}""
+        name: _${{ inputs.repo_name }}
+        tag: _${{ inputs.repo_name }}
         commit: ${{ github.sha }}
         artifacts: ./repo/*
         artifactErrorsFailBuild: true
