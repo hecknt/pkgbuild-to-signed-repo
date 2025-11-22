@@ -3,8 +3,11 @@
 set -oeux pipefail
 
 # debugging
+pwd
 tree
 ls -al
+ls -al /github
+ls -al /github/workspace
 
 if [ -d "/github" ]; then
 sudo chown -R build /github/workspace /github/home
